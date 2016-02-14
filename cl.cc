@@ -8,11 +8,11 @@ int main()
 {
 	string s;
 	Client cl;
-	while(1) {
+	while(s != "end") {
 		cin >> s;
 		cl.send(s);
+		cout << "here" << endl;
 		cout << cl.recv();
-		if(s.compare("end") == 0) break;
 	}
 }
 
