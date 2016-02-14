@@ -31,7 +31,7 @@ void Tcpip::send(string s)
 
 string Tcpip::recv()
 {
-	int i = read(client_fd, buffer, 1020);
+	int i = read(client_fd, buffer, 1024);
 	buffer[i] = '\0';
 	return string(buffer);
 }
