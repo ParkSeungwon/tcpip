@@ -4,15 +4,16 @@
 #include <string>
 using namespace std;
 
-int main()
+int main(int argc, char** argv)
 {
-	string s;
-	Client cl;
-	while(1) {
+	string s = "127.0.0.1";
+	if(argc > 1) s = argv[1];
+	Client cl(s);
+	while(s != "end") {
 		cin >> s;
 		cl.send(s);
+		cout << "here" << endl;
 		cout << cl.recv();
-		if(s.compare("end") == 0) break;
 	}
 }
 

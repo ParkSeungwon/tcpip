@@ -31,8 +31,8 @@ void Tcpip::send(string s)
 
 string Tcpip::recv()
 {
-	int i = read(client_fd, buffer, 1024);
-	buffer[i] = 0;
+	int i = read(client_fd, buffer, 1020);
+	buffer[i] = '\0';
 	return string(buffer);
 }
 
@@ -52,6 +52,7 @@ Server::Server(int port, int queue) : Tcpip(port)
 	else cout << "binding" << endl;
 	if(listen(server_fd, queue) == -1) cout << "listen() error" << endl;
 	else cout << "listening" << endl;
+	
 	int cl_size = sizeof(client_addr);
 	if(client_fd = accept(server_fd, (sockaddr*)&client_addr, (socklen_t*)&cl_size) == -1)
 		cout << "accept() error" << endl;
