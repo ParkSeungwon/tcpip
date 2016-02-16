@@ -12,8 +12,7 @@ int main(int argc, char** argv)
 	while(s != "end") {
 		cin >> s;
 		cl.send(s);
-		cout << "here" << endl;
-		cout << cl.recv();
+		cout << cl.recv() << endl;
 	}
 }
 

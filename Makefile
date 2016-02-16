@@ -3,8 +3,12 @@ CC = g++
 SRC = $(wildcard *.cc)
 OBJ = $(patsubst %.cc, %.o, $(SRC))
 
-all : $(OBJ)
+all : cl sv
+
+cl : cl.o tcpip.o
 	g++ -o cl cl.o tcpip.o
+
+sv : sv.o tcpip.o
 	g++ -o sv sv.o tcpip.o
 	
 %.o : %.cc

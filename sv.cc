@@ -10,7 +10,8 @@ int main()
 	Server sv;
 	while(s != "end") {
 		s = sv.recv();
-		cout << s;
+		cout << s << endl;
+		s += " : " + to_string(s.size());
 		sv.send(s);
 	}
 }
