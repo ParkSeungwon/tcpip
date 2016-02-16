@@ -28,4 +28,9 @@ class Server : public Tcpip
 {
 public:
 	Server(int port = 2001, int queue = 10);
+	void set_process_func(std::string (*process_string)(std::string));
+
+protected:
+	std::string (*process_string)(std::string);
+	handle_connection();
 };

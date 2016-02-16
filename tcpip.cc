@@ -55,7 +55,27 @@ Server::Server(int port, int queue) : Tcpip(port)
 	else cout << "listening" << endl;
 	
 	int cl_size = sizeof(client_addr);
-	client_fd = accept(server_fd, (sockaddr*)&client_addr, (socklen_t*)&cl_size);
-	if(client_fd == -1)	cout << "accept() error" << endl;
-	else cout << "accepting" << endl;
+	while(1) {
+		client_fd = accept(server_fd, (sockaddr*)&client_addr, (socklen_t*)&cl_size);
+		if(client_fd == -1)	cout << "accept() error" << endl;
+		else {
+			cout << "accepting" << endl;
+			thread t {handle_connection};
+			t.detach();
+		}
+	}
+}
+
+Server::set_process_func(string (*pf)(string s))
+{
+	process_string = pf;
+}
+
+Server::handle_connection()
+{
+	while(1) {
+		string s = recv();
+		process_string(s);
+		send(s);
+	}
 }
