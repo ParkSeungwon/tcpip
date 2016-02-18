@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
+#include <signal.h>
 #include "tcpip.h"
 using namespace std;
 
@@ -45,9 +46,10 @@ Client::Client(string ip, int port) : Tcpip(port)
 	else cout << " connecting"  <<endl;
 }
 
-Server::Server(int port, int queue, string e) : Tcpip(port) 
+Server::Server(int port, unsigned int t, int queue, string e) : Tcpip(port) 
 {
 	end_string = e;
+	time_out = t;
 	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if(bind(server_fd, (sockaddr*)&server_addr, sizeof(server_addr)) == -1)
 		cout << "bind() error" << endl;
@@ -58,16 +60,17 @@ Server::Server(int port, int queue, string e) : Tcpip(port)
 
 void Server::start(string (*pf)(string s))
 {
-	process_string = pf;
+	custom_server_func = pf;
 	int cl_size = sizeof(client_addr);
 	while(1) {
 		client_fd = accept(server_fd, (sockaddr*)&client_addr, (socklen_t*)&cl_size);
 		if(client_fd == -1)	cout << "accept() error" << endl;
 		else {
 			cout << "accepting" << endl;
-			if(fork() == 0) handle_connection();
-		//	thread t(&Server::handle_connection, this);
-		//	t.detach();
+			if(fork() == 0) {
+				handle_connection();
+				break;
+			}
 		}
 	}
 }
@@ -75,9 +78,17 @@ void Server::start(string (*pf)(string s))
 void Server::handle_connection()
 {
 	string s;
+	signal(SIGALRM, timed_out);
 	while(s != end_string) {
 		s = recv();
-		send(process_string(s));
+		send(custom_server_func(s));
+		alarm(time_out);
 	}
 	cout << "ending child" << endl;
+}
+
+void Server::timed_out(int sig)
+{
+	cout << "time out" << endl;
+	exit(0);
 }

@@ -28,11 +28,13 @@ public:
 class Server : public Tcpip
 {
 public:
-	Server(int port = 2001, int queue = 10, std::string e = "end");
+	Server(int port = 2001, unsigned int time_out = 600, int queue = 10, std::string e = "end");
 	void start(std::string (*pf)(std::string s));
 
 protected:
-	std::string (*process_string)(std::string);
+	std::string (*custom_server_func)(std::string);
 	void handle_connection();
+	static void timed_out(int sig);
 	std::string end_string;
+	unsigned int time_out;
 };
