@@ -5,18 +5,14 @@
 #include "tcpip.h"
 using namespace std;
 
+string procedure(string s)
+{
+	return s += " : " + to_string(s.size());
+}
+
 int main()
 {
-	string s;
-here:
 	Server sv;
-	if(fork() == 0) {
-		while(s != "end") {
-			s = sv.recv();
-			cout << s << endl;
-			s += " : " + to_string(s.size());
-			sv.send(s);
-		}
-	} else goto here;
+	sv.start(procedure);
 }
 
