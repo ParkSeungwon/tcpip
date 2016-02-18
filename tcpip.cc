@@ -45,37 +45,39 @@ Client::Client(string ip, int port) : Tcpip(port)
 	else cout << " connecting"  <<endl;
 }
 
-Server::Server(int port, int queue) : Tcpip(port) 
+Server::Server(int port, int queue, string e) : Tcpip(port) 
 {
+	end_string = e;
 	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if(bind(server_fd, (sockaddr*)&server_addr, sizeof(server_addr)) == -1)
 		cout << "bind() error" << endl;
 	else cout << "binding" << endl;
 	if(listen(server_fd, queue) == -1) cout << "listen() error" << endl;
 	else cout << "listening" << endl;
-	
+}
+
+void Server::start(string (*pf)(string s))
+{
+	process_string = pf;
 	int cl_size = sizeof(client_addr);
 	while(1) {
 		client_fd = accept(server_fd, (sockaddr*)&client_addr, (socklen_t*)&cl_size);
 		if(client_fd == -1)	cout << "accept() error" << endl;
 		else {
 			cout << "accepting" << endl;
-			thread t {handle_connection};
-			t.detach();
+			if(fork() == 0) handle_connection();
+		//	thread t(&Server::handle_connection, this);
+		//	t.detach();
 		}
 	}
 }
 
-Server::set_process_func(string (*pf)(string s))
+void Server::handle_connection()
 {
-	process_string = pf;
-}
-
-Server::handle_connection()
-{
-	while(1) {
-		string s = recv();
-		process_string(s);
-		send(s);
+	string s;
+	while(s != end_string) {
+		s = recv();
+		send(process_string(s));
 	}
+	cout << "ending child" << endl;
 }

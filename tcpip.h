@@ -1,5 +1,6 @@
 //tcpip.h class definition
 #include <string>
+#include <thread>
 #include <arpa/inet.h>
 
 class Tcpip 
@@ -27,10 +28,11 @@ public:
 class Server : public Tcpip
 {
 public:
-	Server(int port = 2001, int queue = 10);
-	void set_process_func(std::string (*process_string)(std::string));
+	Server(int port = 2001, int queue = 10, std::string e = "end");
+	void start(std::string (*pf)(std::string s));
 
 protected:
 	std::string (*process_string)(std::string);
-	handle_connection();
+	void handle_connection();
+	std::string end_string;
 };
