@@ -58,9 +58,9 @@ Server::Server(int port, unsigned int t, int queue, string e) : Tcpip(port)
 	else cout << "listening" << endl;
 }
 
-void Server::start(string (*pf)(string s))
+template <typename T>
+void Server::start(T functor)
 {
-	custom_server_func = pf;
 	int cl_size = sizeof(client_addr);
 	while(1) {
 		client_fd = accept(server_fd, (sockaddr*)&client_addr, (socklen_t*)&cl_size);
@@ -68,23 +68,18 @@ void Server::start(string (*pf)(string s))
 		else {
 			cout << "accepting" << endl;
 			if(fork() == 0) {
-				handle_connection();
-				break;
+				string s;
+				signal(SIGALRM, timed_out);
+				while(s != end_string) {
+					s = recv();
+					send(functor(s));
+					alarm(time_out);
+				}
+			cout << "ending child" << endl;
+			break;
 			}
 		}
 	}
-}
-
-void Server::handle_connection()
-{
-	string s;
-	signal(SIGALRM, timed_out);
-	while(s != end_string) {
-		s = recv();
-		send(custom_server_func(s));
-		alarm(time_out);
-	}
-	cout << "ending child" << endl;
 }
 
 void Server::timed_out(int sig)

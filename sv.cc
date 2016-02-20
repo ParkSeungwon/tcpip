@@ -3,16 +3,23 @@
 #include "tcpip.h"
 using namespace std;
 
-string procedure(string s)
+class F 
 {
-	string str = "[from server] ";
-	str += s + " : " + to_string(s.size());
-	return str;
-}
+	public:
+		string operator()(string s) {
+			return s;
+		}
+};
 
 int main()
 {
+	auto f = [](string s) {
+		string str = "[from server] ";
+		str += s + " : " + to_string(s.size());
+		return str;
+	};
+
 	Server sv;
-	sv.start(procedure);
+	sv.start(f);
 }
 
