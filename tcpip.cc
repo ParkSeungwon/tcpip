@@ -58,8 +58,7 @@ Server::Server(int port, unsigned int t, int queue, string e) : Tcpip(port)
 	else cout << "listening" << endl;
 }
 
-template <typename T>
-void Server::start(T functor)
+void Server::start(function<string(string)> functor)
 {
 	int cl_size = sizeof(client_addr);
 	while(1) {

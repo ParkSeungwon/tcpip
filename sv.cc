@@ -1,14 +1,17 @@
 //server exe
 #include <string>
+#include <iostream>
 #include "tcpip.h"
 using namespace std;
 
 class F 
 {
-	public:
-		string operator()(string s) {
-			return s;
-		}
+
+public:
+	string str {"[from functor]"};
+	string operator()(string s) {
+		return str + s + " : " + to_string(s.size());
+	}
 };
 
 int main()
@@ -20,6 +23,6 @@ int main()
 	};
 
 	Server sv;
-	sv.start(f);
+	sv.start(F());
 }
 

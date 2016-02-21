@@ -29,7 +29,7 @@ class Server : public Tcpip
 {
 public:
 	Server(int port = 2001, unsigned int time_out = 600, int queue = 10, std::string e = "end");
-	template <typename T> void start(T functor);
+	void start(std::function<std::string(std::string)> functor);
 
 protected:
 	static void timed_out(int sig);
