@@ -18,6 +18,8 @@ set cindent
 set fileencodings=ucs-bom,utf-8,default,latin1
 set guifont=나눔고딕코딩\ 12
 set helplang=ko
+set history=50
+set lispwords=
 set nomodeline
 set mouse=a
 set mousefocus
@@ -28,11 +30,13 @@ set shiftwidth=4
 set showmatch
 set smartcase
 set smartindent
+set softtabstop=4
 set statusline=%f%m%r%h%w[%{&ff}]%y%=[%p%%][%04l/%L,%04v]
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=4
 set termencoding=utf-8
-set window=55
+set undolevels=-123456
+set window=44
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -41,29 +45,23 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +0 ~/Programming/tcpip/tcpip.h
-badd +0 ~/Programming/tcpip/tcpip.cc
-badd +0 ~/Programming/tcpip/sv.cc
-badd +0 ~/Programming/tcpip/cl.cc
-argglobal
-silent! argdel *
-argadd cl.cc
-set stal=2
-edit ~/Programming/tcpip/tcpip.h
+badd +1 ~/Programming/tcpip/tcpip.h
+badd +1 ~/Programming/tcpip/tcpip.cc
+badd +1 ~/Programming/tcpip/sv.cc
+badd +1 ~/Programming/tcpip/cl.cc
+args cl.cc
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
 argglobal
+enew
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal backupcopy=
 setlocal balloonexpr=
 setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
@@ -119,7 +117,6 @@ setlocal iskeyword=@,48-57,_,192-255
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
-setlocal lispwords=
 setlocal nolist
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
@@ -159,18 +156,10 @@ setlocal tags=
 setlocal textwidth=0
 setlocal thesaurus=
 setlocal noundofile
-setlocal undolevels=-123456
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-1
-normal! 0
 tabedit ~/Programming/tcpip/tcpip.cc
 set splitbelow splitright
 set nosplitbelow
@@ -181,11 +170,8 @@ argglobal
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal backupcopy=
 setlocal balloonexpr=
 setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
@@ -241,7 +227,6 @@ setlocal iskeyword=@,48-57,_,192-255
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
-setlocal lispwords=
 setlocal nolist
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
@@ -281,17 +266,16 @@ setlocal tags=
 setlocal textwidth=0
 setlocal thesaurus=
 setlocal noundofile
-setlocal undolevels=-123456
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 43 - ((42 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+43
 normal! 0
 tabedit ~/Programming/tcpip/sv.cc
 set splitbelow splitright
@@ -303,11 +287,8 @@ argglobal
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal backupcopy=
 setlocal balloonexpr=
 setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
@@ -363,7 +344,6 @@ setlocal iskeyword=@,48-57,_,192-255
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
-setlocal lispwords=
 setlocal nolist
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
@@ -403,13 +383,12 @@ setlocal tags=
 setlocal textwidth=0
 setlocal thesaurus=
 setlocal noundofile
-setlocal undolevels=-123456
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 1 - ((0 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -425,11 +404,8 @@ argglobal
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal backupcopy=
 setlocal balloonexpr=
 setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
@@ -485,7 +461,6 @@ setlocal iskeyword=@,48-57,_,192-255
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
-setlocal lispwords=
 setlocal nolist
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
@@ -525,20 +500,18 @@ setlocal tags=
 setlocal textwidth=0
 setlocal thesaurus=
 setlocal noundofile
-setlocal undolevels=-123456
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 1 - ((0 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
 normal! 0
-tabnext 1
-set stal=1
+tabnext 2
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
 endif
