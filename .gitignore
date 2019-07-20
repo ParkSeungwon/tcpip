@@ -3,3 +3,7 @@
 sv
 cl
 *~
+find
+.
+-size
++3M
