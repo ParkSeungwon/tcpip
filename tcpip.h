@@ -2,6 +2,8 @@
 #include <string>
 #include <thread>
 #include <arpa/inet.h>
+#include<functional>
+#include<optional>
 
 class Tcpip 
 {
@@ -9,7 +11,7 @@ public:
 	Tcpip(int port);
 	virtual ~Tcpip();
 	void send(std::string s);
-	std::string recv();
+	std::optional<std::string> recv();
 
 protected:
 	int server_fd, client_fd;

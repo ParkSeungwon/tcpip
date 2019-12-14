@@ -31,11 +31,10 @@ void Tcpip::send(string s)
 	write(client_fd, s.c_str(), s.size()+1);
 }
 
-string Tcpip::recv()
+optional<string> Tcpip::recv()
 {
 	int i = read(client_fd, buffer, 1023);//error
-	buffer[i] = '\0';
-	return string(buffer);
+	return i>=0 ? string(buffer, i) : {};
 }
 
 Client::Client(string ip, int port) : Tcpip(port) 
