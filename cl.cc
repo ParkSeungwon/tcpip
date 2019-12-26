@@ -13,7 +13,8 @@ int main(int argc, char** argv)
 	while(s != "end") {
 		cin >> s;
 		cl.send(s);
-		cout << cl.recv() << endl;
+		if(auto a = cl.recv()) cout << *a << endl;
+		else break;
 	}
 }
 

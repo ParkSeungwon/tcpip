@@ -1,4 +1,4 @@
-CFLAG = -g -std=c++11 
+CFLAG = -g -std=c++17
 CC = g++
 SRC = $(wildcard *.cc)
 OBJ = $(patsubst %.cc, %.o, $(SRC))

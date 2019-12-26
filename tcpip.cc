@@ -18,6 +18,13 @@ Tcpip::Tcpip(int port)
 	server_addr.sin_port = htons(port);
 	server_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	client_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	struct timeval tv;
+	tv.tv_sec = 6;
+	tv.tv_usec = 0;
+	if(setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof tv) < 0) 
+		cerr << "set socket option failed\n";
+	if(setsockopt(client_fd, SOL_SOCKET, SO_KEEPALIVE, &tv, sizeof tv) < 0) 
+		cerr << "set socket option failed\n";
 }
 
 Tcpip::~Tcpip()
@@ -34,7 +41,8 @@ void Tcpip::send(string s)
 optional<string> Tcpip::recv()
 {
 	int i = read(client_fd, buffer, 1023);//error
-	return i>=0 ? string(buffer, i) : {};
+	if(i>=0) return string(buffer, i);
+	else return {};
 }
 
 Client::Client(string ip, int port) : Tcpip(port) 
@@ -68,13 +76,13 @@ void Server::start(function<string(string)> functor)
 			if(fork() == 0) {
 				string s;
 				signal(SIGALRM, timed_out);
-				while(s != end_string) {
-					s = recv();
-					send(functor(s));
+				while(auto a = recv()) {
+					if(*a == end_string) break;
+					send(functor(*a));
 					alarm(time_out);
 				}
-			cout << "ending child" << endl;
-			break;
+				cout << "ending child" << endl;
+				break;
 			}
 		}
 	}
